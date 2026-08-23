@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 .env
 .ipynb_checkpoints/
+
+# Amazon datasets
+data/raw/
+data/processed/*.csv
