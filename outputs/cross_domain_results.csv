@@ -1,0 +1,7 @@
+train_domain,test_domain,accuracy,macro_f1
+Home & Kitchen,Appliances,0.6158361683676873,0.6113598698283299
+Appliances,Home & Kitchen,0.6212,0.6268425032576304
+Home & Kitchen,Sports & Outdoors,0.6310666666666667,0.6351041240362406
+Sports & Outdoors,Home & Kitchen,0.668,0.6686124435465293
+Appliances,Sports & Outdoors,0.6128666666666667,0.6187369546537652
+Sports & Outdoors,Appliances,0.6236408511773731,0.6200905515994225

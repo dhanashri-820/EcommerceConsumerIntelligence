@@ -1,0 +1,4 @@
+domain,model,accuracy,macro_f1
+Home & Kitchen,Logistic Regression,0.699,0.7007902081472
+Appliances,Logistic Regression,0.6625541847282428,0.6637361847722872
+Sports & Outdoors,Logistic Regression,0.6786666666666666,0.6771926952646532
