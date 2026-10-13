@@ -1,0 +1,4 @@
+Model,Negative F1,Neutral F1,Positive F1
+TF-IDF + Logistic Regression,68.11,62.45,79.67
+TF-IDF + Linear SVM,66.26,58.22,78.13
+DistilBERT (Transformer),72.52,64.65,85.16

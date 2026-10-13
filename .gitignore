@@ -4,6 +4,20 @@ __pycache__/
 .env
 .ipynb_checkpoints/
 
-# Amazon datasets
+# Local databases and test scripts
+data/auth.db
+scratch/
+
+# Amazon raw datasets (large binary)
 data/raw/
 data/processed/*.csv
+
+# Frontend dependencies & build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Transformer model weights and training checkpoints (>100MB)
+*.safetensors
+*.pt
+outputs/transformer_home/checkpoint-*/

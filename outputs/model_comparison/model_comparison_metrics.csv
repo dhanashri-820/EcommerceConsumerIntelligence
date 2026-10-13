@@ -1,0 +1,4 @@
+Model,Accuracy,Macro Precision,Macro Recall,Macro F1,Weighted F1
+TF-IDF + Logistic Regression,69.9,70.43,69.9,70.08,70.08
+TF-IDF + Linear SVM,67.47,67.64,67.47,67.54,67.54
+DistilBERT (Transformer),74.03,74.23,74.03,74.11,74.11
