@@ -1,177 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useAuth } from './store/auth';
+
+// Components & Layout
+import { Layout } from './components/Layout';
+import { ProtectedRoute } from './components/ProtectedRoute';
+
+// Pages
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
-import { Sidebar, PageId } from './components/Sidebar';
-import { Header } from './components/Header';
-import { ExecutiveOverview } from './pages/ExecutiveOverview';
-import { SentimentTrends } from './pages/SentimentTrends';
-import { ModelComparison } from './pages/ModelComparison';
-import { AspectHeatmapView } from './pages/AspectHeatmapView';
-import { ComplaintExplorer } from './pages/ComplaintExplorer';
-import { ProductComparisonView } from './pages/ProductComparisonView';
-import { CsvUploadAnalyzer } from './pages/CsvUploadAnalyzer';
-import { LiveReviewAnalyzer } from './pages/LiveReviewAnalyzer';
-import { ConsumerIntelligence } from './pages/ConsumerIntelligence';
-import { AnalysisHistoryView } from './pages/AnalysisHistoryView';
-import { AccountSettings } from './pages/AccountSettings';
-import { 
-  fetchOverview, 
-  fetchModelMetrics, 
-  fetchConsumerInsights,
-  OverviewData,
-  ModelMetricsData,
-  ConsumerInsightsData
-} from './services/api';
-import { Loader2 } from 'lucide-react';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { Overview } from './pages/Overview';
+import { Models } from './pages/Models';
+import { ABSA } from './pages/ABSA';
+import { Insights } from './pages/Insights';
+import { Predict } from './pages/Predict';
+import { ReviewExplorer } from './pages/ReviewExplorer';
 
-const Dashboard: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<PageId>('overview');
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+// Initialize React Query Client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
 
-  // Core base data states
-  const [overviewData, setOverviewData] = useState<OverviewData | null>(null);
-  const [metricsData, setMetricsData] = useState<ModelMetricsData | null>(null);
-  const [insightsData, setInsightsData] = useState<ConsumerInsightsData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isLive, setIsLive] = useState<boolean>(false);
+export const AppContent: React.FC = () => {
+  const { fetchMe } = useAuth();
 
+  // On app mount: restore session from HttpOnly cookie
   useEffect(() => {
-    async function loadAllData() {
-      setIsLoading(true);
-      try {
-        const [overview, metrics, insights] = await Promise.all([
-          fetchOverview(),
-          fetchModelMetrics(),
-          fetchConsumerInsights()
-        ]);
-
-        setOverviewData(overview);
-        setMetricsData(metrics);
-        setInsightsData(insights);
-
-        if (overview.isLive || metrics.isLive) {
-          setIsLive(true);
-        }
-      } catch (err) {
-        console.error('Data initialization error:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadAllData();
-  }, []);
+    fetchMe();
+  }, [fetchMe]);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex text-slate-800">
-      {/* Sidebar Navigation */}
-      <Sidebar
-        currentPage={currentPage}
-        onPageChange={(page) => {
-          setCurrentPage(page);
-          setIsSidebarOpen(false);
-        }}
-        isOpen={isSidebarOpen}
-        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
+    <BrowserRouter>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      {/* Mobile Backdrop */}
-      {isSidebarOpen && (
-        <div
-          onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 md:hidden"
-        />
-      )}
+        {/* Protected Routes wrapped by ProtectedRoute + Layout */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Overview />} />
+            <Route path="/models" element={<Models />} />
+            <Route path="/absa" element={<ABSA />} />
+            <Route path="/insights" element={<Insights />} />
+            <Route path="/explorer" element={<ReviewExplorer />} />
+            <Route path="/predict" element={<Predict />} />
+          </Route>
+        </Route>
 
-      {/* Main Content Area */}
-      <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
-        <Header
-          currentPage={currentPage}
-          onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-          onNavigateToAccount={() => setCurrentPage('account')}
-          isBackendLive={isLive}
-        />
-
-        <main className="flex-1 p-6 max-w-7xl w-full mx-auto">
-          {isLoading ? (
-            <div className="h-96 flex flex-col items-center justify-center gap-3 text-slate-400">
-              <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-              <p className="text-xs font-medium">Loading consumer intelligence platform modules...</p>
-            </div>
-          ) : (
-            <>
-              {currentPage === 'overview' && overviewData && (
-                <ExecutiveOverview data={overviewData} onNavigate={setCurrentPage} />
-              )}
-              {currentPage === 'trends' && (
-                <SentimentTrends />
-              )}
-              {currentPage === 'models' && metricsData && (
-                <ModelComparison data={metricsData} />
-              )}
-              {currentPage === 'aspects' && (
-                <AspectHeatmapView />
-              )}
-              {currentPage === 'complaints' && (
-                <ComplaintExplorer />
-              )}
-              {currentPage === 'compare' && (
-                <ProductComparisonView />
-              )}
-              {currentPage === 'upload' && (
-                <CsvUploadAnalyzer />
-              )}
-              {currentPage === 'predictor' && (
-                <LiveReviewAnalyzer />
-              )}
-              {currentPage === 'insights' && insightsData && (
-                <ConsumerIntelligence data={insightsData} />
-              )}
-              {currentPage === 'history' && (
-                <AnalysisHistoryView />
-              )}
-              {currentPage === 'account' && (
-                <AccountSettings />
-              )}
-            </>
-          )}
-        </main>
-      </div>
-    </div>
+        {/* Fallback route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
-};
-
-const MainAppContent: React.FC = () => {
-  const { isAuthenticated, isLoading } = useAuth();
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center gap-4 text-white">
-        <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-pulse">
-          <Loader2 className="w-6 h-6 animate-spin text-white" />
-        </div>
-        <p className="text-sm font-medium text-slate-300">Checking secure session...</p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    if (authMode === 'register') {
-      return <Register onNavigateToLogin={() => setAuthMode('login')} />;
-    }
-    return <Login onNavigateToRegister={() => setAuthMode('register')} />;
-  }
-
-  return <Dashboard />;
 };
 
 export const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <MainAppContent />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppContent />
+    </QueryClientProvider>
   );
 };
 

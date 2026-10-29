@@ -1,68 +1,72 @@
-# EcommerceConsumerIntelligence - React Analytics Dashboard 🛒
+# Consumer IQ — Frontend
 
-A modern, responsive, SaaS-style analytics frontend for the **EcommerceConsumerIntelligence** Data Science platform.
+Modern, production-ready, dark-themed React + TypeScript intelligence dashboard for the **EcommerceConsumerIntelligence** platform.
 
-Built with **React 18**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Recharts**.
+Features real-time multi-model sentiment inference, multi-axis aspect polarity radar, model benchmarking confusion heatmaps, and voice-of-customer mining.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quickstart Guide
 
-### 1. Ensure the Python FastAPI Backend is Running
+### Prerequisites
+- **Node.js**: v18+ (tested on v26)
+- **Python**: 3.9+ with virtual environment activated (`.venv`)
+- **FastAPI Backend**: running on port 8000
+
+---
+
+### Step 1: Start the Backend (Terminal 1)
 From the repository root:
 ```bash
-# In your virtual environment:
-uvicorn api:app --host 127.0.0.1 --port 8000
-```
-API docs will be available at [http://localhost:8000/docs](http://localhost:8000/docs).
+# Activate virtual environment if applicable
+# Windows: .venv\Scripts\activate
+# Linux/macOS: source .venv/bin/activate
 
-### 2. Start the React Frontend
-From the `frontend/` directory:
+uvicorn api:app --port 8000 --reload
+```
+The FastAPI backend will start at `http://127.0.0.1:8000`.
+
+---
+
+### Step 2: Start the Frontend (Terminal 2)
+From the repository root:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Open **[http://localhost:5173](http://localhost:5173)** in your browser.
 
 ---
 
-## 📦 Features & Pages
-
-1. **Executive Overview (`/`):**
-   - KPI metrics: 45,000 processed reviews across 3 categories, top model accuracies.
-   - Sentiment distribution donut chart (Positive, Neutral, Negative).
-   - Multi-domain horizontal volume comparison.
-   - Sample customer review table with star ratings.
-
-2. **Model Comparison:**
-   - Benchmarking table: TF-IDF Logistic Regression vs. Linear SVM vs. Fine-tuned DistilBERT.
-   - Interactive grouped bar chart for Accuracy, Precision, Recall, Macro F1, Weighted F1.
-   - Per-class F1-score breakdown chart across sentiment tiers.
-   - Interactive Confusion Matrix heatmaps (N = 3,000).
-
-3. **Aspect-Based Sentiment Analysis (ABSA):**
-   - 6 product dimensions: Quality, Price, Delivery, Durability, Design, Usability.
-   - Stacked sentiment distribution charts.
-   - Filterable clause table with keyword search and sentiment dropdowns.
-
-4. **Consumer Intelligence:**
-   - Recurring customer complaints and root-cause failure analysis.
-   - Frequently praised features and brand strengths.
-   - Actionable engineering, logistics, and marketing recommendations with expected ROI.
-
-5. **Live Review Analyzer:**
-   - Real-time review input field with instant sentiment classification.
-   - Model selector (DistilBERT, Logistic Regression, Linear SVM, or Compare All).
-   - Probability distribution bars and confidence scoring.
-   - Extracted aspect breakdown with supporting clause quotes.
+### Step 3: Access the Application
+Open your browser and navigate to:
+👉 **[http://127.0.0.1:5173/](http://127.0.0.1:5173/)**
 
 ---
 
-## ⚙️ Environment Configuration
+## 🔒 Authentication Flow
+1. Landing on `http://127.0.0.1:5173/` checks for an existing session via `GET /api/auth/me`.
+2. If unauthenticated, you will be redirected to `/login`.
+3. Create a new account at `/register` or sign in with your credentials.
+4. Session tokens are secured using HttpOnly cookies with automatic proxy pass-through to `http://127.0.0.1:8000`.
 
-Create a `.env` file in `frontend/`:
-```env
-VITE_API_BASE_URL=http://localhost:8000
-```
-If the backend server is offline, the frontend automatically falls back to verified baseline benchmark metrics, ensuring a seamless presentation experience.
+---
+
+## 📊 Dashboard Modules
+- **Overview (`/`)**: Executive KPIs with inline sparklines, class polarity donut, and domain breakdown bars.
+- **Model Benchmarks (`/models`)**: Comparative grouped bar charts, 5-shade confusion heatmaps, and per-class F1 analysis across DistilBERT, Logistic Regression, and Linear SVM.
+- **Aspect Radar (`/absa`)**: Hexagonal multi-axis radar chart and custom stacked polarity bars across Quality, Price, Delivery, Durability, Design, and Usability.
+- **Voice of Customer (`/insights`)**: Strategic driver cards with verbatim customer quotes, actions, and projected ROI.
+- **Live Predictor (`/predict`)**: Real-time review analyzer with multi-model inference consensus and fine-grained aspect clause breakdown.
+
+---
+
+## 🛠️ Tech Stack
+- **Framework**: React 18 + Vite + TypeScript
+- **Styling**: TailwindCSS (Dark ops command center aesthetic)
+- **Data Caching**: `@tanstack/react-query`
+- **Routing**: `react-router-dom` v6
+- **Charts**: `recharts` (Pie, Bar, Radar)
+- **Icons**: `lucide-react`
+- **State**: `zustand` (with persist)
+- **Client**: `axios` (`withCredentials: true`)
