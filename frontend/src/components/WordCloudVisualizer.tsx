@@ -5,9 +5,7 @@ import { GlassCard } from './GlassCard';
 import { exportToCsv, exportToJson } from '../lib/export';
 import {
   Cloud,
-  Sparkles,
   Download,
-  Filter,
   TrendingUp,
   TrendingDown,
   Info,
@@ -25,8 +23,8 @@ export const WordCloudVisualizer: React.FC = () => {
   if (isLoading) {
     return (
       <GlassCard className="p-6">
-        <div className="h-6 w-48 bg-white/5 rounded mb-4 animate-pulse" />
-        <div className="h-56 bg-white/5 rounded-xl border border-white/5 animate-pulse" />
+        <div className="h-6 w-48 bg-slate-200 rounded mb-4 animate-pulse" />
+        <div className="h-56 bg-slate-100 rounded-xl border border-slate-200 animate-pulse" />
       </GlassCard>
     );
   }
@@ -48,12 +46,12 @@ export const WordCloudVisualizer: React.FC = () => {
     exportToJson('Customer_Voice_WordCloud.json', words);
   };
 
-  // Calculate font size scaling from 12px to 26px
+  // Calculate font size scaling from 12px to 24px
   const getFontSize = (val: number) => {
     const minVal = 40;
     const maxVal = 100;
     const minFont = 12;
-    const maxFont = 26;
+    const maxFont = 22;
     const scaled = minFont + ((val - minVal) / (maxVal - minVal)) * (maxFont - minFont);
     return Math.round(Math.max(minFont, Math.min(maxFont, scaled)));
   };
@@ -63,27 +61,27 @@ export const WordCloudVisualizer: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-neon-cyan uppercase font-semibold">
-            <Cloud className="w-4 h-4" />
-            <span>CUSTOMER VOICE FREQUENCY CLOUD</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-indigo-700 uppercase font-semibold">
+            <Cloud className="w-4 h-4 text-indigo-600" />
+            <span>Customer Voice Frequency Cloud</span>
           </div>
-          <h3 className="text-lg font-bold text-white mt-0.5">
+          <h3 className="text-lg font-bold text-slate-900 mt-0.5">
             Voice-of-Customer Collocation Cloud
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             N-gram phrase collocations sized by corpus recurrence frequency.
           </p>
         </div>
 
         {/* Filter Pills & Export */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center p-1 rounded-lg bg-black/40 border border-white/10 text-xs font-mono">
+          <div className="flex items-center p-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-mono">
             <button
               onClick={() => setFilter('ALL')}
               className={`px-2.5 py-1 rounded-md transition-all ${
                 filter === 'ALL'
-                  ? 'bg-neon-cyan/20 text-neon-cyan font-bold border border-neon-cyan/30'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-white text-slate-900 font-bold shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               All ({data.total_terms})
@@ -92,8 +90,8 @@ export const WordCloudVisualizer: React.FC = () => {
               onClick={() => setFilter('POSITIVE')}
               className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1 ${
                 filter === 'POSITIVE'
-                  ? 'bg-neon-lime/20 text-neon-lime font-bold border border-neon-lime/30'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-emerald-600 text-white font-bold shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <TrendingUp className="w-3 h-3" />
@@ -103,8 +101,8 @@ export const WordCloudVisualizer: React.FC = () => {
               onClick={() => setFilter('NEGATIVE')}
               className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1 ${
                 filter === 'NEGATIVE'
-                  ? 'bg-neon-red/20 text-neon-red font-bold border border-neon-red/30'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-rose-600 text-white font-bold shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <TrendingDown className="w-3 h-3" />
@@ -114,17 +112,17 @@ export const WordCloudVisualizer: React.FC = () => {
 
           <button
             onClick={handleExportCsv}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono text-slate-300 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700 shadow-sm transition-colors"
             title="Download CSV"
           >
-            <Download className="w-3 h-3 text-neon-cyan" />
+            <Download className="w-3 h-3 text-sky-600" />
             <span>CSV</span>
           </button>
         </div>
       </div>
 
       {/* Cloud Canvas Area */}
-      <div className="p-6 rounded-xl bg-black/30 border border-white/[0.06] min-h-[220px] flex flex-wrap items-center justify-center gap-3 select-none">
+      <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 min-h-[200px] flex flex-wrap items-center justify-center gap-2.5 select-none">
         {words.map((item, idx) => {
           const fontSize = getFontSize(item.value);
           const isPos = item.sentiment === 'POSITIVE';
@@ -135,18 +133,18 @@ export const WordCloudVisualizer: React.FC = () => {
               key={idx}
               onClick={() => setSelectedWord(item)}
               style={{ fontSize: `${fontSize}px` }}
-              className={`px-3 py-1 rounded-xl font-mono transition-all transform hover:scale-110 active:scale-95 cursor-pointer ${
+              className={`px-3 py-1 rounded-lg font-mono transition-all transform hover:scale-105 active:scale-95 cursor-pointer ${
                 isSelected
-                  ? 'ring-2 ring-white scale-110 z-10'
+                  ? 'ring-2 ring-indigo-500 shadow-sm z-10'
                   : 'opacity-90 hover:opacity-100'
               } ${
                 isPos
-                  ? 'text-neon-lime bg-neon-lime/[0.08] border border-neon-lime/25 hover:bg-neon-lime/20 hover:shadow-[0_0_15px_rgba(163,230,53,0.3)]'
-                  : 'text-neon-red bg-neon-red/[0.08] border border-neon-red/25 hover:bg-neon-red/20 hover:shadow-[0_0_15px_rgba(244,63,94,0.3)]'
+                  ? 'text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100'
+                  : 'text-rose-800 bg-rose-50 border border-rose-200 hover:bg-rose-100'
               }`}
             >
-              <span>{item.text}</span>
-              <span className="ml-1.5 text-[10px] font-mono text-slate-400 opacity-70">
+              <span className="font-semibold">{item.text}</span>
+              <span className="ml-1.5 text-[10px] font-mono text-slate-500 opacity-80">
                 {item.value}
               </span>
             </button>
@@ -156,28 +154,27 @@ export const WordCloudVisualizer: React.FC = () => {
 
       {/* Selected Term Detail Drawer */}
       {selectedWord && (
-        <div className="p-3.5 rounded-lg bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs animate-fadeIn">
+        <div className="p-3.5 rounded-lg bg-indigo-50/60 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-neon-cyan shrink-0" />
-            <span className="text-slate-300">Selected Collocation:</span>
-            <span className="font-bold text-white font-mono">"{selectedWord.text}"</span>
+            <Info className="w-4 h-4 text-indigo-600 shrink-0" />
+            <span className="text-slate-600">Selected Collocation:</span>
+            <span className="font-bold text-slate-900 font-mono">"{selectedWord.text}"</span>
             <span
               className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                 selectedWord.sentiment === 'POSITIVE'
-                  ? 'bg-neon-lime/20 text-neon-lime'
-                  : 'bg-neon-red/20 text-neon-red'
+                  ? 'bg-emerald-100 text-emerald-800'
+                  : 'bg-rose-100 text-rose-800'
               }`}
             >
               {selectedWord.sentiment}
             </span>
           </div>
-          <div className="flex items-center gap-3 text-slate-400 font-mono text-[11px]">
-            <span>Dimension: <strong className="text-white">{selectedWord.category}</strong></span>
-            <span>Corpus Weight: <strong className="text-white">{selectedWord.value} / 100</strong></span>
+          <div className="flex items-center gap-3 text-slate-600 font-mono text-[11px]">
+            <span>Dimension: <strong className="text-slate-900">{selectedWord.category}</strong></span>
+            <span>Corpus Weight: <strong className="text-slate-900">{selectedWord.value} / 100</strong></span>
           </div>
         </div>
       )}
     </GlassCard>
   );
 };
-

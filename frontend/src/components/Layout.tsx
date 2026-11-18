@@ -7,9 +7,9 @@ export const Layout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#05070d]">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-900">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block shrink-0">
         <Sidebar />
       </div>
 
@@ -17,7 +17,7 @@ export const Layout: React.FC = () => {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden">
           <div
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="relative z-50">
@@ -25,7 +25,7 @@ export const Layout: React.FC = () => {
           </div>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="absolute top-4 right-4 p-2 text-slate-300 hover:text-white"
+            className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 bg-white rounded-lg shadow-sm"
           >
             <X className="w-6 h-6" />
           </button>
@@ -35,30 +35,30 @@ export const Layout: React.FC = () => {
       {/* Main Area Shell */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         {/* Top Header Bar */}
-        <header className="h-14 border-b border-white/[0.06] bg-[#05070d]/60 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20">
+        <header className="h-14 border-b border-slate-200 bg-white/90 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-1.5 rounded-lg text-slate-300 hover:bg-white/5"
+              className="lg:hidden p-1.5 rounded-lg text-slate-600 hover:bg-slate-100"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-neon-cyan shadow-[0_0_8px_#22d3ee]" />
-              <span className="text-xs font-mono font-medium text-slate-300 tracking-wider uppercase">
-                CONSUMER IQ / INTELLIGENCE PLATFORM
+            <div className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
+              <span className="text-xs font-semibold text-slate-700 tracking-wide uppercase">
+                Ecommerce Consumer Intelligence Platform
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
-            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.02] border border-white/[0.04]">
-              <Server className="w-3.5 h-3.5 text-neon-violet" />
-              <span>FastAPI · 127.0.0.1:8000</span>
+          <div className="flex items-center gap-4 text-xs font-mono text-slate-600">
+            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-700">
+              <Server className="w-3.5 h-3.5 text-indigo-600" />
+              <span className="font-medium">FastAPI · 127.0.0.1:8000</span>
             </div>
-            <div className="flex items-center gap-1.5 text-neon-lime">
+            <div className="flex items-center gap-1.5 text-emerald-600 font-medium">
               <Activity className="w-3.5 h-3.5" />
-              <span className="text-[11px] font-semibold">ALL SYSTEMS NOMINAL</span>
+              <span>Operational</span>
             </div>
           </div>
         </header>

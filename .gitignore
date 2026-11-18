@@ -1,23 +1,69 @@
-.venv/
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-.env
-.ipynb_checkpoints/
+*.py[cod]
+*$py.class
 
-# Local databases and test scripts
-data/auth.db
-scratch/
+# C extensions
+*.so
 
-# Amazon raw datasets (large binary)
-data/raw/
-data/processed/*.csv
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Frontend dependencies & build artifacts
+# Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Node / React Frontend
 frontend/node_modules/
 frontend/dist/
-frontend/.env
+frontend/.vite/
 
-# Transformer model weights and training checkpoints (>100MB)
-*.safetensors
-*.pt
-outputs/transformer_home/checkpoint-*/
+# Database files
+data/auth.db
+*.sqlite3
+*.db
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor cache
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Task logs & scratch
+scratch/
+*.log

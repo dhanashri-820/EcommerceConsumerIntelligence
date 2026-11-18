@@ -14,17 +14,15 @@ export const SentimentPill: React.FC<SentimentPillProps> = ({
 }) => {
   const norm = String(sentiment).toUpperCase() as Sentiment;
 
-  let colorClasses = 'bg-amber-400/20 text-amber-300 border-amber-400/40';
-  let dotColor = 'bg-amber-400';
+  let colorClasses = 'bg-amber-50 text-amber-800 border-amber-200';
+  let dotColor = 'bg-amber-500';
 
   if (norm === 'POSITIVE') {
-    colorClasses = 'bg-lime-400/20 text-lime-300 border-lime-400/40';
-    dotColor = 'bg-lime-400 shadow-[0_0_8px_#a3e635]';
+    colorClasses = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+    dotColor = 'bg-emerald-500';
   } else if (norm === 'NEGATIVE') {
-    colorClasses = 'bg-red-500/20 text-red-300 border-red-400/40';
-    dotColor = 'bg-red-500 shadow-[0_0_8px_#f87171]';
-  } else {
-    dotColor = 'bg-amber-400 shadow-[0_0_8px_#fbbf24]';
+    colorClasses = 'bg-rose-50 text-rose-800 border-rose-200';
+    dotColor = 'bg-rose-500';
   }
 
   const sizeClasses = {
@@ -35,7 +33,7 @@ export const SentimentPill: React.FC<SentimentPillProps> = ({
 
   return (
     <span
-      className={`inline-flex items-center rounded-full font-mono uppercase tracking-wider border font-medium transition-all ${colorClasses} ${sizeClasses}`}
+      className={`inline-flex items-center rounded-full font-mono uppercase tracking-wider border font-medium transition-all shadow-xs ${colorClasses} ${sizeClasses}`}
     >
       {showDot && <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />}
       {norm}

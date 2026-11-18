@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python virtual environment and cache
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Node modules (frontend builds inside Docker)
+frontend/node_modules
+frontend/.vite
+
+# Dev notebooks (not needed at runtime)
+notebooks/
+
+# Scratch and local artifacts
+scratch/
+*.log
+
+# Local env overrides
+.env
+.env.local
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+

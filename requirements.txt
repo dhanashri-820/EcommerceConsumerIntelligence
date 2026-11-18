@@ -1,18 +1,30 @@
-torch>=2.0.0
-transformers>=4.35.0
-scikit-learn>=1.3.0
+# Core Machine Learning & Data Processing
 pandas>=2.0.0
 numpy>=1.24.0
+scikit-learn>=1.3.0
+scipy>=1.10.0
 joblib>=1.3.0
+
+# Deep Learning & Natural Language Processing
+torch>=2.0.0
+transformers>=4.35.0
+nltk>=3.8.0
+
+# Visualization & Reporting
 matplotlib>=3.7.0
 seaborn>=0.12.0
-streamlit>=1.28.0
 altair>=5.0.0
-nltk>=3.8.0
+
+# Web Applications & API
+streamlit>=1.28.0
 fastapi>=0.110.0
 uvicorn>=0.28.0
-bcrypt>=4.1.0
-pyjwt>=2.8.0
-requests>=2.31.0
 pydantic>=2.6.0
 python-multipart>=0.0.9
+
+# Security & Sessions
+bcrypt>=4.1.0
+pyjwt>=2.8.0
+
+# Optional Testing & Environment
+requests>=2.31.0

@@ -18,22 +18,22 @@ export const AspectPolarityBars: React.FC<AspectPolarityBarsProps> = ({ aspects 
   return (
     <div className="space-y-4">
       {/* Legend & Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-        <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           Aspect Polarity Ratios
         </span>
         <div className="flex items-center gap-3 text-xs font-mono">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-neon-lime" />
-            <span className="text-slate-300">Pos %</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            <span className="text-slate-600 font-medium">Pos %</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-neon-amber" />
-            <span className="text-slate-300">Neu %</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+            <span className="text-slate-600 font-medium">Neu %</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-neon-red" />
-            <span className="text-slate-300">Neg %</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+            <span className="text-slate-600 font-medium">Neg %</span>
           </div>
         </div>
       </div>
@@ -52,51 +52,34 @@ export const AspectPolarityBars: React.FC<AspectPolarityBarsProps> = ({ aspects 
 
           return (
             <div key={aspectName} className="flex items-center gap-3 group">
-              <span className="w-24 text-xs font-semibold text-slate-200 truncate font-mono">
+              <span className="w-24 text-xs font-semibold text-slate-700 truncate font-mono">
                 {aspectName}
               </span>
 
-              {/* 3-segment bar with subtle glow on hover */}
-              <div
-                className="flex-1 h-3.5 bg-white/[0.05] rounded-full overflow-hidden flex transition-all duration-300 group-hover:ring-1 group-hover:ring-white/20"
-                title={`${aspectName}: ${posPct}% Pos (${pos}), ${neuPct}% Neu (${neu}), ${negPct}% Neg (${neg})`}
-              >
-                {posPct > 0 && (
-                  <div
-                    className="h-full bg-neon-lime transition-all duration-700 ease-out"
-                    style={{
-                      width: `${posPct}%`,
-                      boxShadow: '0 0 8px rgba(163,230,53,0.4)',
-                    }}
-                  />
-                )}
-                {neuPct > 0 && (
-                  <div
-                    className="h-full bg-neon-amber transition-all duration-700 ease-out"
-                    style={{
-                      width: `${neuPct}%`,
-                      boxShadow: '0 0 8px rgba(251,191,36,0.4)',
-                    }}
-                  />
-                )}
-                {negPct > 0 && (
-                  <div
-                    className="h-full bg-neon-red transition-all duration-700 ease-out"
-                    style={{
-                      width: `${negPct}%`,
-                      boxShadow: '0 0 8px rgba(248,113,113,0.4)',
-                    }}
-                  />
-                )}
+              {/* 3-segment bar with clean appearance */}
+              <div className="flex-1 h-3 rounded-full overflow-hidden flex bg-slate-100 border border-slate-200">
+                <div
+                  style={{ width: `${posPct}%` }}
+                  className="bg-emerald-500 transition-all duration-500 hover:brightness-105"
+                  title={`Positive: ${posPct}%`}
+                />
+                <div
+                  style={{ width: `${neuPct}%` }}
+                  className="bg-amber-400 transition-all duration-500 hover:brightness-105"
+                  title={`Neutral: ${neuPct}%`}
+                />
+                <div
+                  style={{ width: `${negPct}%` }}
+                  className="bg-rose-500 transition-all duration-500 hover:brightness-105"
+                  title={`Negative: ${negPct}%`}
+                />
               </div>
 
-              {/* Mono ratio at right end */}
-              <div className="w-24 text-right text-xs font-mono font-bold tracking-tight">
-                <span className="text-neon-lime">{posPct}</span>
-                <span className="text-slate-500 mx-0.5">/</span>
-                <span className="text-neon-amber">{neuPct}</span>
-                <span className="text-slate-500 mx-0.5">/</span>
-                <span className="text-neon-red">{negPct}</span>
+              {/* Numeric percent label */}
+              <div className="w-24 text-right text-xs font-mono font-medium text-slate-500 flex justify-end gap-1.5">
+                <span className="text-emerald-700 font-semibold">{posPct}%</span>
+                <span className="text-slate-300">/</span>
+                <span className="text-rose-700 font-semibold">{negPct}%</span>
               </div>
             </div>
           );

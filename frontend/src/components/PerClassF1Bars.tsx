@@ -7,37 +7,37 @@ interface PerClassF1BarsProps {
 
 export const PerClassF1Bars: React.FC<PerClassF1BarsProps> = ({ metrics }) => {
   const classes: Array<{ key: 'negative' | 'neutral' | 'positive'; label: string; badgeColor: string }> = [
-    { key: 'negative', label: 'Negative Sentiment', badgeColor: 'text-neon-red bg-neon-red/10 border-neon-red/30' },
-    { key: 'neutral', label: 'Neutral Sentiment', badgeColor: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30' },
-    { key: 'positive', label: 'Positive Sentiment', badgeColor: 'text-neon-lime bg-neon-lime/10 border-neon-lime/30' },
+    { key: 'negative', label: 'Negative Sentiment', badgeColor: 'text-rose-700 bg-rose-50 border-rose-200' },
+    { key: 'neutral', label: 'Neutral Sentiment', badgeColor: 'text-amber-700 bg-amber-50 border-amber-200' },
+    { key: 'positive', label: 'Positive Sentiment', badgeColor: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
   ];
 
   const getModelColor = (modelName: string) => {
     const lower = modelName.toLowerCase();
-    if (lower.includes('distilbert')) return '#a78bfa'; // violet
-    if (lower.includes('svm')) return '#a3e635'; // lime
-    return '#22d3ee'; // cyan
+    if (lower.includes('distilbert')) return '#4f46e5'; // indigo
+    if (lower.includes('svm')) return '#0d9488'; // teal
+    return '#0284c7'; // sky
   };
 
   return (
     <div className="space-y-6">
       {/* Legend */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
-        <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-200">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           Metric: Per-Class F1 Score (%)
         </span>
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-neon-cyan" />
-            <span className="text-slate-300">Logistic Regression</span>
+            <span className="w-2.5 h-2.5 rounded-sm bg-sky-600" />
+            <span className="text-slate-600">Logistic Regression</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-neon-lime" />
-            <span className="text-slate-300">Linear SVM</span>
+            <span className="w-2.5 h-2.5 rounded-sm bg-teal-600" />
+            <span className="text-slate-600">Linear SVM</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-neon-violet" />
-            <span className="text-slate-300">DistilBERT</span>
+            <span className="w-2.5 h-2.5 rounded-sm bg-indigo-600" />
+            <span className="text-slate-600 font-semibold">DistilBERT</span>
           </div>
         </div>
       </div>
@@ -57,23 +57,19 @@ export const PerClassF1Bars: React.FC<PerClassF1BarsProps> = ({ metrics }) => {
 
               return (
                 <div key={m.model} className="flex items-center gap-3">
-                  <span className="w-28 text-xs font-mono text-slate-400 truncate">
+                  <span className="w-36 text-xs font-mono text-slate-600 truncate">
                     {m.model}
                   </span>
-                  <div className="flex-1 h-3 bg-white/[0.06] rounded-full overflow-hidden relative">
+                  <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden relative border border-slate-200/80">
                     <div
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${Math.min(100, Math.max(0, val))}%`,
                         backgroundColor: color,
-                        boxShadow: `0 0 10px ${color}88`,
                       }}
                     />
                   </div>
-                  <span
-                    className="w-14 text-right text-xs font-mono font-bold"
-                    style={{ color }}
-                  >
+                  <span className="w-14 text-right text-xs font-mono font-bold text-slate-800">
                     {val.toFixed(2)}%
                   </span>
                 </div>

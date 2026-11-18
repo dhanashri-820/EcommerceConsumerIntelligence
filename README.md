@@ -1,20 +1,31 @@
-# EcommerceConsumerIntelligence 🛒
+# EcommerceConsumerIntelligence 📊
 
-**Third-Year B.Tech Computer Engineering (Data Science) Project**  
-*An End-to-End E-Commerce Opinion Mining & Consumer Intelligence System*
+> **An End-to-End E-Commerce Customer Analytics, Churn Prediction & NLP Opinion Mining Platform**  
+> *Portfolio-ready Data Science & Machine Learning system combining tabular customer analytics with transformer sentiment benchmarking.*
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-2.0.0-teal.svg)](https://fastapi.tiangolo.com/)
+[![React 18](https://img.shields.io/badge/React-18-blue.svg)](https://react.dev/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-red.svg)](https://streamlit.io/)
 
 ---
 
-## 📌 Executive Summary
+## 📌 Executive Summary & Business Problem
 
-Modern e-commerce platforms contain millions of user-generated customer reviews. While overall 1-to-5 star ratings indicate customer satisfaction at a high level, they fail to explain **why** a customer felt satisfied or dissatisfied. 
+In high-volume e-commerce marketplaces, aggregate 1-to-5 star ratings obscure **why** buyers churn or remain loyal. Furthermore, business and product teams require answers to operational questions:
+- *Which customer segments generate recurring value, and which are at imminent risk of inactivity?*
+- *What specific product dimensions (Quality, Price, Delivery, Durability) drive negative reviews?*
+- *How accurately can self-attention transformer models (DistilBERT) resolve complex linguistic patterns compared to linear Bag-of-Words baselines?*
 
-**EcommerceConsumerIntelligence** is a data science and machine learning system that transforms unstructured customer reviews into actionable business intelligence. It integrates:
-1. **Multi-Domain Balanced Datasets:** Mitigating majority-class bias across Amazon reviews (Home & Kitchen, Appliances, Sports & Outdoors).
-2. **Comparative Sentiment Modeling:** Rigorous benchmarking of classical n-gram Bag-of-Words models (Logistic Regression, Linear SVM) against a fine-tuned Transformer (**DistilBERT**).
-3. **Aspect-Based Sentiment Analysis (ABSA):** Clause-level extraction isolating sentiment for specific product attributes: *Quality*, *Price*, *Delivery*, *Durability*, *Design*, and *Usability*.
-4. **Consumer Intelligence & Voice-of-Customer Mining:** Clustering recurring pain points and praises to produce evidence-based engineering, packaging, and marketing recommendations.
-5. **Interactive Streamlit Web Dashboard:** A user-facing analytical dashboard supporting live multi-model sentiment inference.
+**EcommerceConsumerIntelligence** is a comprehensive Data Science system integrating:
+1. **RFM & K-Means Customer Segmentation:** Identifying high-value advocates vs. dormant churn risks.
+2. **Predictive Churn Modeling:** Baseline Logistic Regression vs. Enhanced Random Forest with feature importances.
+3. **Cohort Retention Heatmaps:** Tracking activity persistence across quarterly customer cohorts.
+4. **Demand & Review Volume Time-Series Forecasting:** 90-day Holt's linear trend forecasting with 95% confidence intervals.
+5. **Market Basket Co-Occurrence Mining:** Uncovering cross-reviewed item associations.
+6. **Multi-Model NLP Benchmarking & ABSA:** Clause-level Aspect-Based Sentiment Analysis and DistilBERT vs. TF-IDF + LR/SVM comparison.
+7. **Dual-Application Frontends:** An interactive Streamlit analytical dashboard (`app/app.py`) and an enterprise React + FastAPI dashboard.
 
 ---
 
@@ -22,237 +33,164 @@ Modern e-commerce platforms contain millions of user-generated customer reviews.
 
 ```mermaid
 flowchart TD
-    A[Amazon E-Commerce Reviews] --> B[Data Cleaning & Stratified Balancing]
-    B --> C1[Home & Kitchen - 15,000 Reviews]
-    B --> C2[Appliances - 15,000 Reviews]
-    B --> C3[Sports & Outdoors - 15,000 Reviews]
+    A[45,000 Amazon Reviews Across 3 Domains] --> B[Data Cleaning & Feature Engineering]
     
-    C1 --> D1[TF-IDF Feature Extraction]
-    C1 --> D2[DistilBERT Tokenizer]
+    subgraph Tabular Data Science & Customer Analytics
+        B --> C1[RFM Matrix & K-Means Segmentation]
+        B --> C2[Churn Predictor: Baseline LR vs Random Forest]
+        B --> C3[Quarterly Cohort Retention Matrix]
+        B --> C4[90-Day Weekly Volume Demand Forecast]
+        B --> C5[Market Basket ASIN Co-occurrences]
+    end
     
-    D1 --> E1[Logistic Regression]
-    D1 --> E2[Linear SVM]
-    D2 --> E3[DistilBERT Fine-Tuned Model]
+    subgraph Natural Language Processing & Opinion Mining
+        B --> D1[TF-IDF N-Grams: 43,377 Features]
+        B --> D2[DistilBERT Tokenizer & Transformer]
+        D1 --> E1[Logistic Regression: 69.90% Acc]
+        D1 --> E2[Linear SVM: 67.47% Acc]
+        D2 --> E3[DistilBERT Fine-Tuned: 74.03% Acc]
+        E3 --> F[Clause-Level Aspect Sentiment ABSA]
+    end
     
-    E1 & E2 & E3 --> F[Model Benchmarking & Evaluation]
-    
-    E3 --> G[Aspect-Based Sentiment Analysis - ABSA]
-    G --> H1[Quality]
-    G --> H2[Price]
-    G --> H3[Delivery]
-    G --> H4[Durability]
-    G --> H5[Design]
-    G --> H6[Usability]
-    
-    G --> I[Consumer Intelligence Extraction]
-    I --> J1[Top Complaints & Failure Modes]
-    I --> J2[Key Praised Features]
-    I --> J3[Actionable Business Recommendations]
-    
-    F & G & I --> K[Interactive Streamlit Dashboard]
+    C1 & C2 & C3 & C4 & C5 & E1 & E2 & E3 & F --> G[Streamlit Dashboard: app/app.py]
+    C1 & C2 & C3 & C4 & C5 & E1 & E2 & E3 & F --> H[FastAPI + React Enterprise Web App]
 ```
 
 ---
 
-## 📊 Dataset Specifications
+## 📊 Dataset & Domain Specifications
 
-The datasets are balanced across three sentiment tiers derived from Amazon customer ratings:
-- **Negative:** Ratings 1 and 2 stars
-- **Neutral:** Rating 3 stars
-- **Positive:** Ratings 4 and 5 stars
+The system is trained and evaluated across 45,000 balanced Amazon customer reviews spanning three primary categories:
 
-| Dataset | Total Reviews | Class Balance | Split Ratio | Features |
-| :--- | :---: | :---: | :---: | :---: |
-| `home_kitchen_balanced.csv` | 15,000 | 5,000 / class | 80% Train (12,000) / 20% Test (3,000) | 43,377 TF-IDF Features |
-| `appliances_balanced.csv` | 15,000 | 5,000 / class | Cross-Domain Evaluation | 39,120 TF-IDF Features |
-| `sports_outdoors_balanced.csv` | 15,000 | 5,000 / class | Cross-Domain Evaluation | 41,250 TF-IDF Features |
+| Domain | Reviews | Class Distribution | Unique Users | Unique ASINs | Time Horizon |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Home & Kitchen** (Primary) | 15,000 | 1:1:1 (5,000 Neg / 5,000 Neu / 5,000 Pos) | 2,657 | 14,329 | 2003 – 2023 |
+| **Appliances** (Cross-Domain) | 15,000 | 1:1:1 (5,000 Neg / 5,000 Neu / 5,000 Pos) | 14,908 | 8,020 | 2005 – 2023 |
+| **Sports & Outdoors** (Cross-Domain) | 15,000 | 1:1:1 (5,000 Neg / 5,000 Neu / 5,000 Pos) | 6,073 | 13,658 | 2001 – 2023 |
 
 ---
 
-## 🤖 Phase 1: Model Benchmarking & Evaluation
+## 📈 Key Empirical Results & Model Benchmarks
 
-Models were evaluated on a held-out test split of 3,000 Home & Kitchen reviews ($N=1,000$ per class).
-
-### Overall Metrics Comparison (%)
+### 1. NLP Sentiment Classification Benchmarking (Held-out Test $N=3,000$)
 
 | Model | Accuracy | Macro Precision | Macro Recall | Macro F1 | Weighted F1 |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **TF-IDF + Logistic Regression** | 69.90% | 70.43% | 69.90% | 70.08% | 70.08% |
 | **TF-IDF + Linear SVM** | 67.47% | 67.64% | 67.47% | 67.54% | 67.54% |
-| **DistilBERT (Fine-Tuned)** | **74.03%** | **74.23%** | **74.03%** | **74.11%** | **74.11%** |
+| **TF-IDF + Logistic Regression** | 69.90% | 70.43% | 69.90% | 70.08% | 70.08% |
+| **DistilBERT (Transformer)** | **74.03%** | **74.23%** | **74.03%** | **74.11%** | **74.11%** |
 
-### Per-Class F1-Scores (%)
+*Takeaway:* DistilBERT achieves a **+4.13% accuracy improvement** over the best linear baseline by resolving complex linguistic dependencies, sarcasm, and adversative conjunctions (*"looks nice, but broke immediately"*).
 
-| Model | Negative F1 | Neutral F1 | Positive F1 |
-| :--- | :---: | :---: | :---: |
-| **TF-IDF + Logistic Regression** | 68.11% | 62.45% | 79.67% |
-| **TF-IDF + Linear SVM** | 66.26% | 58.22% | 78.13% |
-| **DistilBERT (Transformer)** | **72.52%** | **64.65%** | **85.16%** |
+### 2. Predictive Churn Classification
 
-### Academic Discussion
-- **Transformer Superiority:** DistilBERT achieves a **+4.13% accuracy improvement** over Logistic Regression and **+6.56%** over Linear SVM. Its multi-head self-attention mechanisms resolve complex linguistic phenomena such as negations (*"not bad at all"*), sarcasm, and clause dependencies that Bag-of-Words fails to capture.
-- **The Neutral Ambiguity Challenge:** Across all models, neutral reviews exhibited the lowest F1-score (~58%–65%), reflecting mixed opinions containing both praise and criticism.
+| Model | Accuracy | ROC-AUC | F1-Score | 5-Fold CV ROC-AUC |
+| :--- | :---: | :---: | :---: | :---: |
+| **Baseline (Logistic Regression)** | 67.85% | 0.7068 | 0.6198 | 0.6980 |
+| **Enhanced (Random Forest)** | **68.61%** | **0.7130** | **0.6214** | **0.7052** |
 
-Generated charts are saved under `outputs/model_comparison/`:
-- `model_comparison_chart.png`
-- `per_class_f1_chart.png`
-- `confusion_matrices.png`
+*Top Churn Predictors:* Customer Review Velocity, Tenure Length, and Average Rating Skew.
 
 ---
 
-## 🔍 Phase 2: Aspect-Based Sentiment Analysis (ABSA)
-
-The ABSA pipeline segments customer reviews into grammatical clauses and maps them to six product aspects:
-1. **Quality:** materials, build, craftsmanship, sturdiness, defectiveness.
-2. **Price:** cost, affordability, value for money, overpriced.
-3. **Delivery:** shipping timeliness, courier packaging, transit damage.
-4. **Durability:** wear and tear, longevity, premature breakage.
-5. **Design:** aesthetic appearance, color, form factor, footprint.
-6. **Usability:** ease of assembly, cleaning convenience, noise levels.
-
-### Verified Test Examples
-- **Review:** *"The product quality is excellent, but delivery was slow."*
-  - **Quality:** `POSITIVE` (Confidence: 95.1%)
-  - **Delivery:** `NEGATIVE` (Confidence: 82.6%)
-- **Review:** *"Very expensive for such cheap plastic material, broke within two days."*
-  - **Price:** `NEGATIVE` | **Quality:** `NEGATIVE` | **Durability:** `NEGATIVE`
-
-Extracted results are stored in `outputs/absa/aspect_sentiment_results.csv`.
-
----
-
-## 💡 Phase 3: Consumer Intelligence & Recommendations
-
-By mining high-frequency n-grams in negative vs. positive review subsets, we extract actionable product insights:
-
-| Focus Area | Recurring Customer Voice | Engineering & Business Action | Expected Impact |
-| :--- | :--- | :--- | :--- |
-| **Product Durability** | *"stopped working"*, *"cheap plastic"* | Replace high-stress plastic gear couplings with sintered steel alloys. | 30–40% reduction in returns & 1-star reviews. |
-| **Logistics & Packaging** | *"arrived damaged"*, *"broken glass"* | Implement molded pulp corner buffer inserts over loose polybags. | Significant decrease in courier carrier claims. |
-| **Maintenance / UX** | *"hard to clean"*, *"difficult assembly"* | Design dishwasher-safe snap-apart assemblies; embed QR code video manuals. | Higher Net Promoter Score (NPS) and repurchases. |
-| **Marketing Copy** | *"easy to clean"*, *"looks great"* | Feature *"5-Minute Cleanup"* and lifestyle countertop photos in primary listing banners. | Improved listing conversion rate. |
-
----
-
-## 🚀 Interactive Streamlit Dashboard
-
-Run the interactive dashboard locally:
-
-```bash
-streamlit run app.py
-```
-
-### Dashboard Features
-1. **Executive Overview:** High-level KPIs, review class balance, and domain summaries.
-2. **Model Comparison:** Interactive metric bar charts, per-class tables, and confusion matrix visualizer.
-3. **Aspect-Based Sentiment (ABSA):** Distribution charts and interactive clause extractor.
-4. **Consumer Intelligence:** Clustered complaint drivers and strategic recommendation tables.
-5. **Live Review Predictor:** Input any review to get side-by-side predictions across DistilBERT, Logistic Regression, and Linear SVM, complete with aspect breakdowns.
-
----
-
-## 📁 Repository Structure
+## 📂 Repository Structure
 
 ```
 EcommerceConsumerIntelligence/
 ├── data/
-│   └── processed/
+│   ├── raw/                             <- Raw uncompressed dataset drop
+│   └── processed/                       <- 45,000 balanced multi-domain CSVs
 │       ├── home_kitchen_balanced.csv
 │       ├── appliances_balanced.csv
 │       └── sports_outdoors_balanced.csv
-├── models/
-│   ├── sentiment_model/                     <- Fine-tuned DistilBERT weights & tokenizer
-│   ├── logistic_regression_home.joblib      <- Fitted Logistic Regression model
-│   ├── svm_home.joblib                      <- Fitted Linear SVM model
-│   └── tfidf_home.joblib                    <- Fitted TF-IDF vectorizer (43,377 features)
 ├── notebooks/
 │   ├── 01_data_loading_and_eda.ipynb
 │   ├── 02_multi_domain_preparation.ipynb
 │   ├── 03_baseline_model_comparison.ipynb
 │   └── 04_transformer_sentiment.ipynb
-├── outputs/
-│   ├── model_comparison/                   <- Comparison tables & high-res PNG charts
-│   ├── transformer_home/                   <- DistilBERT report & confusion matrix
-│   ├── absa/                               <- Aspect sentiment tables & summaries
-│   └── consumer_insights/                  <- Complaint/Praise CSVs & visual charts
-├── src/
-│   ├── sentiment_predictor.py              <- Unified inference engine (3 models)
-│   ├── aspect_extraction.py                <- Aspect extraction & clause sentiment
-│   ├── consumer_insights.py                <- Voice-of-customer mining & recommendations
-│   └── model_comparison.py                 <- Reproducible evaluation script
-├── app.py                                  <- Streamlit interactive web application
-├── requirements.txt                        <- Python dependencies
-├── .gitignore                              <- Clean repository exclusions
-└── README.md                               <- Comprehensive documentation
+├── src/                                 <- Modular, production-tested Python source
+│   ├── data_processing.py               <- Cleaning & timestamp parsing
+│   ├── customer_analytics.py            <- RFM, K-Means, Cohorts, Market Basket
+│   ├── churn_model.py                   <- Feature engineering & Churn ML
+│   ├── forecasting.py                   <- Time-series demand forecasting
+│   ├── sentiment_predictor.py           <- Multi-model inference engine
+│   ├── aspect_extraction.py             <- Clause-level ABSA engine
+│   └── consumer_insights.py             <- Voice-of-customer n-gram mining
+├── reports/
+│   └── figures/                         <- High-resolution saved evaluation plots
+│       ├── customer_segments_rfm.png
+│       ├── cohort_retention_heatmap.png
+│       ├── churn_evaluation_and_importance.png
+│       └── demand_forecast_90days.png
+├── app/
+│   └── app.py                           <- Streamlit Analytics & ML Dashboard
+├── frontend/                            <- Enterprise React 18 + Vite Web App
+├── tests/
+│   └── test_data_processing.py          <- Automated unit tests
+├── models/                              <- Fitted models (DistilBERT, TF-IDF, SVM, LR)
+├── api.py                               <- FastAPI backend with SQLite JWT auth
+├── run_pipeline.py                      <- Single-command full pipeline execution
+├── requirements.txt                     <- Pinned project dependencies
+├── LICENSE                              <- MIT License
+└── README.md
 ```
 
 ---
 
-## 🛠️ Installation & Setup
+## ⚡ Quickstart & Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/dhanashri-820/EcommerceConsumerIntelligence.git
-   cd EcommerceConsumerIntelligence
-   ```
+### 1. Clone & Set Up Environment
 
-2. **Create and activate a virtual environment:**
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .venv\Scripts\activate
-   # Linux/macOS:
-   source .venv/bin/activate
-   ```
+```bash
+git clone https://github.com/dhanashri-820/EcommerceConsumerIntelligence.git
+cd EcommerceConsumerIntelligence
 
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Create and activate virtual environment
+python -m venv .venv
+# On Windows:
+.venv\Scripts\activate
+# On Linux/macOS:
+source .venv/bin/activate
 
-4. **Launch the FastAPI & ML Inference Backend:**
-   ```bash
-   uvicorn api:app --host 127.0.0.1 --port 8000 --reload
-   ```
-   *Documentation available at `http://127.0.0.1:8000/docs` (Swagger UI).*
+# Install dependencies
+pip install -r requirements.txt
+```
 
-5. **Launch the React + TypeScript Frontend:**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-   *Application live at `http://127.0.0.1:5173`.*
+### 2. Run the Full Analytics Pipeline
 
-6. **(Alternative) Launch Streamlit Web Dashboard:**
-   ```bash
-   streamlit run app.py
-   ```
+Execute data ingestion, cleaning, RFM segmentation, churn modeling, and time-series forecasting in a single command:
+```bash
+python run_pipeline.py
+```
 
----
+### 3. Run Automated Tests
 
-## 🔒 Authentication & API Architecture
+```bash
+python -m unittest tests/test_data_processing.py
+```
 
-The system features real, persistent authentication implemented with SQLite and FastAPI:
-- **Password Security:** Salted hashes generated using `bcrypt` (12 rounds). Plaintext passwords are never stored.
-- **Session Management:** Cryptographically signed HS256 JSON Web Tokens (JWT) dispatched via secure `HttpOnly` cookies and bearer authorization.
-- **Database:** Local SQLite database at `data/auth.db` with enforced unique email indexing.
-- **Live ML Endpoints:**
-  - `POST /api/auth/register` - User registration with full validation and duplicate checks.
-  - `POST /api/auth/login` - Secure login with credential verification and cookie issuance.
-  - `GET /api/auth/me` - Authenticated session validation.
-  - `POST /api/auth/logout` - Session invalidation and cookie clearing.
-  - `POST /api/auth/forgot-password` - Password recovery flow status.
-  - `GET /api/overview` - Multi-domain review distributions and high-level KPIs.
-  - `GET /api/models/metrics` - Benchmarking metrics and confusion matrices.
-  - `GET /api/aspects/summary` - Aspect-level sentiment breakdowns across 6 dimensions.
-  - `GET /api/insights` - Voice-of-customer complaint/praise n-grams and ROI recommendations.
-  - `POST /api/predict` - Real-time sentiment classification (DistilBERT, Logistic Regression, Linear SVM) and clause aspect extraction.
+### 4. Launch the Applications
+
+- **Streamlit Analytics Dashboard:**
+  ```bash
+  streamlit run app/app.py
+  ```
+- **FastAPI Backend (with Swagger UI):**
+  ```bash
+  uvicorn api:app --host 127.0.0.1 --port 8000
+  ```
+- **React Modern Frontend:**
+  ```bash
+  cd frontend
+  npm install
+  npm run dev
+  ```
 
 ---
 
-## 🎓 Academic Contributors
-- **Student Name:** Dhanashri Shinde
+## 👤 Author & Academic Details
+
+- **Author:** Dhanashri Shinde
 - **Degree:** Third-Year B.Tech Computer Engineering (Data Science)
-- **Institution:** Department of Computer Engineering
-
+- **Repository:** [https://github.com/dhanashri-820/EcommerceConsumerIntelligence](https://github.com/dhanashri-820/EcommerceConsumerIntelligence)
+- **License:** MIT License

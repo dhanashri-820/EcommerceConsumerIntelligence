@@ -48,38 +48,37 @@ export const AspectRadar: React.FC<AspectRadarProps> = ({
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <div className="w-full" style={{ height }}>
+      <div style={{ width: '100%', height }}>
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart cx="50%" cy="50%" outerRadius="75%" data={chartData}>
-            <PolarGrid
-              stroke="rgba(255, 255, 255, 0.08)"
-              gridType="polygon"
-            />
+            <PolarGrid stroke="#e2e8f0" strokeDasharray="3 3" />
             <PolarAngleAxis
               dataKey="aspect"
-              tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 500 }}
+              stroke="#64748b"
+              tick={{ fill: '#334155', fontSize: 12, fontWeight: 600 }}
             />
             <PolarRadiusAxis
               angle={30}
               domain={[0, 100]}
-              ticks={['25', '50', '75', '100'] as any}
-              stroke="rgba(255, 255, 255, 0.2)"
-              tick={{ fill: '#64748b', fontSize: 10, fontFamily: 'JetBrains Mono' }}
+              stroke="#cbd5e1"
+              tick={{ fill: '#64748b', fontSize: 10, fontFamily: 'monospace' }}
+              tickFormatter={(v) => `${v}%`}
             />
             <Tooltip
               content={({ active, payload }) => {
                 if (active && payload && payload.length) {
                   const data = payload[0].payload;
                   return (
-                    <div className="glass-panel px-3.5 py-2.5 rounded-lg border border-neon-cyan/30 text-xs font-mono shadow-2xl">
-                      <div className="text-white font-bold mb-1">{data.aspect}</div>
-                      <div className="text-neon-cyan font-bold mb-1">
-                        Positive Ratio: {data.positiveRate}%
+                    <div className="bg-white p-3 rounded-lg shadow-lg border border-slate-200 text-xs font-mono">
+                      <div className="text-slate-900 font-bold mb-1 pb-1 border-b border-slate-100 flex items-center justify-between gap-4">
+                        <span>{data.aspect}</span>
+                        <span className="text-indigo-600 font-bold">{data.positiveRate}% Pos</span>
                       </div>
-                      <div className="text-[11px] text-slate-400 space-y-0.5">
-                        <div>+ Pos: {data.positive}</div>
-                        <div>~ Neu: {data.neutral}</div>
-                        <div>- Neg: {data.negative}</div>
+                      <div className="space-y-0.5 text-slate-500">
+                        <div>Positive: {data.positive}</div>
+                        <div>Neutral: {data.neutral}</div>
+                        <div>Negative: {data.negative}</div>
+                        <div className="text-[10px] text-slate-400 pt-1">Total: {data.total} mentions</div>
                       </div>
                     </div>
                   );
@@ -90,19 +89,13 @@ export const AspectRadar: React.FC<AspectRadarProps> = ({
             <Radar
               name="Positive Rate"
               dataKey="positiveRate"
-              stroke="#22d3ee"
+              stroke="#4f46e5"
+              fill="#6366f1"
+              fillOpacity={0.25}
               strokeWidth={2}
-              fill="rgba(34, 211, 238, 0.2)"
-              fillOpacity={0.6}
-              isAnimationActive={true}
-              animationDuration={800}
             />
           </RadarChart>
         </ResponsiveContainer>
-      </div>
-
-      <div className="text-center text-[11px] font-mono text-slate-400 mt-1">
-        Axis metric: Aspect Positive Sentiment Percentage (0 - 100%)
       </div>
     </div>
   );

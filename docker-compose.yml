@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  # ── FastAPI + ML Backend ────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: eci_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist the SQLite auth database and any generated outputs
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    environment:
+      - PYTHONUNBUFFERED=1
+      # Override in a .env file for production secrets
+      - JWT_SECRET=${JWT_SECRET:-changeme-use-a-real-secret-in-production}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s   # DistilBERT takes a moment to load
+      retries: 3
+
+  # ── React/Vite Frontend (Nginx) ─────────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: eci_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+networks:
+  default:
+    name: eci_network
